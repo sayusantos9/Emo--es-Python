@@ -1,6 +1,10 @@
 
-palavras_positivas = ["feliz", "ótimo", "incrível", "bom", "maravilhoso"]
-palavras_negativas = ["triste", "horrível", "péssimo", "terrível", "frustrado"]
+palavras_positivas = ["ótimo", "bom", "excelente", "maravilhoso", "gostei", "satisfeito",
+    "eficiente", "agradável", "funciona", "recomendo", "feliz",
+    "incrível", "perfeito", "rápido", "top"]
+palavras_negativas = ["ruim", "péssimo", "lento", "não gostei", "horrível", "insatisfeito",
+    "problema", "triste", "erro", "demora", "bugado", "defeito",
+    "decepcionado", "inútil", "fraco""]
 
 
 input = "Meu foi frustrado, porém bom!!"
