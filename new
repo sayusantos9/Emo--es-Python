@@ -1,0 +1,73 @@
+palavras_positivas = {
+    "feliz", "ótimo", "incrível", "bom", "maravilhoso", "alegre", "contente", "fantástico", "excelente", "adorável",
+    "radiante", "satisfeito", "motivado", "animado", "encantador", "positiva", "esperançoso", "divertido", "eficiente",
+    "gostei", "recomendo", "amei", "agradável", "ótima", "funcional", "boa", "amável", "bacana"
+}
+
+palavras_negativas = {
+    "triste", "horrível", "péssimo", "terrível", "frustrado", "decepcionado", "raiva", "chateado", "insuportável",
+    "lamentável", "desesperado", "inseguro", "exausto", "cansado", "zangado", "confuso", "estressado", "tenso",
+    "irritado", "preocupado", "não", "ruim", "pior", "inaceitável", "falhou", "lento", "caro", "desorganizado", "medíocre"
+}
+
+modificadores_positivos = {
+    "apesar", "porém", "todavia", "mesmo", "contudo", "embora", "mas"
+}
+
+sentiment_dict = {
+   
+    "feliz": 2, "ótimo": 3, "incrível": 4, "bom": 2, "maravilhoso": 5, "alegre": 2, "contente": 2, "fantástico": 4,
+    "excelente": 3, "adorável": 3, "radiante": 3, "satisfeito": 2, "motivado": 2, "animado": 2, "encantador": 3,
+    "positiva": 2, "esperançoso": 2, "divertido": 2, "eficiente": 2, "valente": 2,
+    "gostei": 2, "recomendo": 3, "amei": 3, "agradável": 2, "ótima": 3, "funcional": 2, "boa": 2, "amável": 2, "bacana": 2,
+
+  
+    "triste": -2, "horrível": -4, "péssimo": -3, "terrível": -5, "frustrado": -3, "decepcionado": -3, "raiva": -4,
+    "chateado": -2, "insuportável": -5, "lamentável": -3, "desesperado": -3, "inseguro": -2, "exausto": -2,
+    "cansado": -1, "zangado": -3, "confuso": -2, "estressado": -2, "tenso": -2, "irritado": -3, "preocupado": -2,
+    "ruim": -2, "pior": -3, "inaceitável": -4, "falhou": -3, "lento": -2, "caro": -2, "desorganizado": -3, "medíocre": -2
+}
+
+def analisar_texto(texto):
+    score = 0
+    inverter = False
+    skip_next = False
+
+    palavras = texto.lower().replace(',', '').replace('.', '').split()
+
+    for idx, palavra in enumerate(palavras):
+        if skip_next:
+            skip_next = False
+            continue
+
+        if palavra in modificadores_positivos:
+            inverter = True
+            continue
+
+        if palavra == "não" and idx + 1 < len(palavras):
+            proxima = palavras[idx + 1]
+            valor = sentiment_dict.get(proxima, 0)
+            score -= valor  
+            skip_next = True
+            continue
+
+        if palavra in palavras_positivas or palavra in palavras_negativas:
+            valor = sentiment_dict.get(palavra, 0)
+            if inverter:
+                valor *= -1
+                inverter = False
+            score += valor
+
+    if score > 5:
+        print("Esse texto é muito positivo!")
+    elif 1 <= score <= 5:
+        print("Esse texto é positivo!")
+    elif -5 <= score <= -1:
+        print("Esse texto é negativo!")
+    elif score < -5:
+        print("Esse texto é muito negativo!")
+    else:
+        print("Esse texto é neutro!")
+
+
+analisar_texto("")
